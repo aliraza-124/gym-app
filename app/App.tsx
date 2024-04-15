@@ -1,7 +1,5 @@
 import React from 'react';
-import TextField from './components/textField';
-import {GluestackUIProvider} from '@gluestack-ui/themed';
-import {config} from '@gluestack-ui/config';
+import TextField from './components/textField'
 
 const App = () => {
   return <TextField />;
