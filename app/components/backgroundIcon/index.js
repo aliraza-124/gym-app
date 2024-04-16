@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
   avatar: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    top: 40, // adjust position as needed
-    left: 14, // adjust position as needed
+    top: 40,
+    left: 14,
   },
 });
 

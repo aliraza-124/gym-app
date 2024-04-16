@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 
-const TextField = ({label, placeholder, value, onChangeText}) => {
+const TextField = ({label, placeholder, value, secureTextEntry, onChangeText}) => {
   const theme = {
     colors: {
       primary: '#FA2D5E',
@@ -19,6 +19,7 @@ const TextField = ({label, placeholder, value, onChangeText}) => {
         mode="outlined"
         placeholder={placeholder}
         value={value}
+        secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
         dense= 'true'
         theme={theme}
