@@ -3,7 +3,7 @@ import React from 'react';
 import {Card, Divider} from 'react-native-paper';
 
 import {Formik} from 'formik';
-import { validationSchema } from '../../validation/validationSchemas';
+import { registrationValidationSchema } from '../../validation/validationSchemas';
 
 import BackgroundImage from '../../components/backgroundImage';
 import TextField from '../../components/textField';
@@ -28,7 +28,7 @@ const RegistrationScreen = ({navigation}) => {
 
               <Formik
                 initialValues={initialValues}
-                validationSchema={validationSchema}
+                validationSchema={registrationValidationSchema}
                 onSubmit={(values, actions) => {
                   console.log(values);
                   navigation.navigate('Login');

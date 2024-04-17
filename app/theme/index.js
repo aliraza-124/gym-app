@@ -8,6 +8,9 @@ const theme = {
     accent: '#FFC107',
     error: '#FF5722',
     success: '#00BCD4',
+
+    white: '#FFFFFF',
+    black: '#000000',
   },
 };
 

@@ -4,12 +4,14 @@ import {Avatar, Card, Divider} from 'react-native-paper';
 import {KeyboardAvoidingScrollView} from 'react-native-keyboard-avoiding-scroll-view';
 
 import {Formik} from 'formik';
-import {validationSchema} from '../../validation/validationSchemas';
+import {profileValidationSchema} from '../../validation/validationSchemas';
 
 import TextField from '../../components/textField';
 import CustomButton from '../../components/button';
 import BackgroundIcon from '../../components/backgroundIcon';
 import theme from '../../theme';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const initialValues = {
   name: '',
@@ -28,7 +30,7 @@ const initialValues = {
 };
 
 const CompleteProfile = ({navigation}) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState();
   const openLibrary = async () => {
     const LibraryResult = await launchImageLibrary({mediaType: 'photo'});
     if (!LibraryResult.didCancel && !LibraryResult.error) {
@@ -48,55 +50,50 @@ const CompleteProfile = ({navigation}) => {
           <Card style={styles.styledCard}>
             <Card.Content>
               <View style={{gap: 14}}>
-                <View style={{alignItems: 'center', marginVertical: 14}}>
-                  <Avatar.Image
-                    size={140}
-                    source={require('../../../assets/images/profile.png')}
-                  />
-                </View>
-                {/* <View
+                <View style={{alignItems: 'center', marginVertical: 14}}></View>
+                <View
                   flex={1}
                   flexDirection="row"
                   justifyContent="center"
                   alignItems="center"
                   position="relative">
                   {selectedImage ? (
-                    <Image
+                    <Avatar.Image
+                      size={140}
                       source={{uri: selectedImage}}
-                      alt="User Profile"
-                      size="2xl"
-                      borderRadius="$full"
-                      style={{width: 140, height: 140}}
                     />
                   ) : (
-                    <Avatar
-                      bgColor="$amber600"
-                      size="2xl"
-                      borderRadius="$full"
+                    <Avatar.Icon
+                      size={140}
+                      icon="account"
+                      backgroundColor={theme.colors.primary}
                     />
-                  )} */}
+                  )}
 
-                {/* <View
-                    p={10}
-                    bgColor="$pink600"
-                    borderRadius="$full"
-                    position="absolute"
-                    right={140}
-                    top={110}>
-                    <FA5
-                      name="camera"
-                      size={20}
-                      color="white"
-                      onPress={() => bottomToast()}
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      top: 28,
+                      borderColor: theme.colors.white,
+                      borderWidth: 2,
+                      borderRadius: 100,
+                      // padding: 10,
+                    }}
+                    onPress={openLibrary}>
+                    <Avatar.Icon
+                      size={40}
+                      icon="pen"
+                      backgroundColor={theme.colors.primary}
                     />
-                  </View> */}
-                {/* </View> */}
+                  </TouchableOpacity>
+                </View>
 
                 <Text style={styles.styledSubTitle}>Basic Infromation</Text>
 
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  validationSchema={profileValidationSchema}
                   onSubmit={(values, actions) => {
                     console.log(values);
                     navigation.navigate('Login');

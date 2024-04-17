@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {Card} from 'react-native-paper';
 
 import {Formik} from 'formik';
-import { validationSchema } from '../../validation/validationSchemas';
+import { loginValidationSchema } from '../../validation/validationSchemas';
 
 import BackgroundImage from '../../components/backgroundImage';
 import TextField from '../../components/textField';
@@ -71,7 +71,7 @@ const LoginScreen = ({navigation}) => {
 
               <Formik
                 initialValues={initialValues}
-                validationSchema={validationSchema}
+                validationSchema={loginValidationSchema}
                 onSubmit={(values, actions) => {
                   console.log(values);
                   navigation.navigate('CompleteProfile');
