@@ -1,24 +1,24 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {Button, Card, Divider, IconButton} from 'react-native-paper';
-import {Icon, MD3Colors} from 'react-native-paper';
+import {Card, Divider} from 'react-native-paper';
+
+import {Formik} from 'formik';
+import { validationSchema } from '../../validation/validationSchemas';
 
 import BackgroundImage from '../../components/backgroundImage';
 import TextField from '../../components/textField';
 import CustomButton from '../../components/button';
 import TextButton from '../../components/textButton';
-import {ScrollView} from 'react-native-gesture-handler';
+import IconButton from '../../components/iconButton';
+import theme from './../../theme/index';
+
+
+const initialValues = {name: '', email: '', password: '', confirmPassword: ''};
 
 const RegistrationScreen = ({navigation}) => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
-
   return (
     <BackgroundImage source={require('../../../assets/images/background.png')}>
       <View style={styles.styledContainer}>
-        {/* <ScrollView style={{flex: 1}}> */}
         <Card style={styles.styledCard}>
           <Card.Content>
             <View style={{gap: 10}}>
@@ -26,72 +26,104 @@ const RegistrationScreen = ({navigation}) => {
                 Sign Up
               </Text>
 
-              <TextField
-                label="Name"
-                placeholder="Enter your name"
-                value={name}
-                onChangeText={name => setName(name)}
-              />
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={(values, actions) => {
+                  console.log(values);
+                  navigation.navigate('Login');
+                  actions.resetForm();
+                }}>
+                {({
+                  handleChange,
+                  handleSubmit,
+                  values,
+                  errors,
+                  isSubmitting,
+                }) => (
+                  <>
+                    <TextField
+                      label="Name"
+                      placeholder="Enter your name"
+                      value={values.name}
+                      onChangeText={handleChange('name')}
+                      errors={errors.name}
+                    />
 
-              <TextField
-                label="Email"
-                placeholder="Enter your email"
-                value={email}
-                onChangeText={email => setEmail(email)}
-              />
+                    <TextField
+                      label="Email"
+                      placeholder="Enter your email"
+                      value={values.email}
+                      onChangeText={handleChange('email')}
+                      errors={errors.email}
+                    />
 
-              <TextField
-                label="Password"
-                placeholder="Enter your password"
-                value={password}
-                secureTextEntry
-                onChangeText={password => setPassword(password)}
-              />
+                    <TextField
+                      label="Password"
+                      placeholder="Enter your password"
+                      value={values.password}
+                      secureTextEntry
+                      onChangeText={handleChange('password')}
+                      errors={errors.password}
+                    />
 
-              <TextField
-                label="Confirm Password"
-                placeholder="Enter your confirm password"
-                value={confirmPassword}
-                secureTextEntry
-                onChangeText={confirmPassword =>
-                  setConfirmPassword(confirmPassword)
-                }
-              />
+                    <TextField
+                      label="Confirm Password"
+                      placeholder="Enter your confirm password"
+                      value={values.confirmPassword}
+                      secureTextEntry
+                      onChangeText={handleChange('confirmPassword')}
+                      errors={errors.confirmPassword}
+                    />
+
+                    <View style={{marginTop: 24}}>
+                      <CustomButton
+                        title="Sign Up"
+                        mode="contained"
+                        onPress={handleSubmit}
+                      />
+                    </View>
+
+                    <View style={styles.styledDividerWrapper}>
+                      <Divider style={styles.styledDivider} />
+                      <Text style={{color: theme.colors.text}}>
+                        Or sign up with
+                      </Text>
+                      <Divider style={styles.styledDivider} />
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        gap: 30,
+                        marginBottom: 0,
+                      }}>
+                      <IconButton
+                        icon="google"
+                        title="Google"
+                        onPress={() => console.log('Google')}
+                      />
+
+                      <IconButton
+                        icon="facebook"
+                        title="Facebook"
+                        onPress={() => console.log('Facebook')}
+                      />
+                    </View>
+
+                    <TextButton
+                      title="Already have account?"
+                      align="center"
+                      underline="underline"
+                      onPress={() => navigation.navigate('Login')}
+                    />
+                  </>
+                )}
+              </Formik>
             </View>
-
-            <View style={{marginTop: 24}}>
-              <CustomButton
-                title="Sign Up"
-                mode="contained"
-                onPress={() => console.log('Sign-UP')}
-              />
-            </View>
-
-            <View style={{marginVertical: 10}}>
-              <Divider />
-              <Text>Or sign up with</Text>
-              <Divider />
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 20,
-              }}>
-              <CustomButton title="Google" mode="outlined" />
-              <CustomButton title="Facebook" mode="outlined" />
-            </View>
-
-            <TextButton
-              title="Already have account?"
-              align="center"
-              underline="underline"
-              onPress={() => navigation.navigate('Login')}
-            />
           </Card.Content>
         </Card>
-        {/* </ScrollView> */}
       </View>
     </BackgroundImage>
   );
@@ -113,6 +145,18 @@ const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: 'bold',
     textAlign: 'left',
+  },
+
+  styledDivider: {
+    width: 94,
+  },
+
+  styledDividerWrapper: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
   },
 });
 

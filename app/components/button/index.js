@@ -9,6 +9,7 @@ const CustomButton = ({title, mode, onPress}) => {
   };
 
   const textColor = mode === 'contained' ? 'white' : theme.colors.primary;
+  const rippleColor = mode === 'outlined' ? 'transparent' : theme.colors.primary;
 
   return (
     <View>
@@ -16,7 +17,8 @@ const CustomButton = ({title, mode, onPress}) => {
         mode={mode}
         style={[styles.styledButton, buttonStyle]}
         onPress={onPress}
-        textColor={textColor}>
+        textColor={textColor}
+        rippleColor={rippleColor}>
         {title}
       </Button>
     </View>
@@ -27,6 +29,7 @@ const styles = StyleSheet.create({
   styledButton: {
     borderRadius: 4,
     paddingVertical: 3,
+    borderColor: theme.colors.primary,
   },
 });
 

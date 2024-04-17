@@ -2,13 +2,17 @@ import {View, Text, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import {Card} from 'react-native-paper';
 
+import {Formik} from 'formik';
+import { validationSchema } from '../../validation/validationSchemas';
+
 import BackgroundImage from '../../components/backgroundImage';
 import TextField from '../../components/textField';
 import CustomButton from '../../components/button';
 import PaperModal from '../../components/paperModal';
 import TextButton from '../../components/textButton';
-import OTPTextInput from '../../components/otpTextInput';
 import theme from '../../theme';
+
+const initialValues = {email: '', password: ''};
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = React.useState('');
@@ -58,31 +62,73 @@ const LoginScreen = ({navigation}) => {
       <View style={styles.styledContainer}>
         <Card style={styles.styledCard}>
           <Card.Content>
-            <View style={{gap: 10}}>
-              <Text variant="titleLarge" style={styles.styledTitle}>
-                Sign In
-              </Text>
+            <View>
+              <View style={{marginBottom: 10}}>
+                <Text variant="titleLarge" style={styles.styledTitle}>
+                  Sign In
+                </Text>
+              </View>
 
-              <TextField
-                label="Email"
-                placeholder="Enter your email"
-                value={email}
-                onChangeText={email => setEmail(email)}
-              />
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={(values, actions) => {
+                  console.log(values);
+                  navigation.navigate('CompleteProfile');
+                  actions.resetForm();
+                }}>
+                {({
+                  handleChange,
+                  handleSubmit,
+                  values,
+                  errors,
+                  isSubmitting,
+                }) => (
+                  <>
+                    <View style={{gap: 10}}>
+                      <TextField
+                        label="Email"
+                        placeholder="Enter your email"
+                        value={values.email}
+                        onChangeText={handleChange('email')}
+                        errors={errors.email}
+                      />
 
-              <TextField
-                label="Password"
-                placeholder="Enter your password"
-                value={password}
-                secureTextEntry
-                onChangeText={password => setPassword(password)}
-              />
+                      <TextField
+                        label="Password"
+                        placeholder="Enter your password"
+                        value={values.password}
+                        secureTextEntry
+                        onChangeText={handleChange('password')}
+                        errors={errors.password}
+                      />
+                    </View>
+
+                    <View style={{top: -6}}>
+                      <TextButton
+                        title="Forgot Password?"
+                        underline="underline"
+                        onPress={handleOpenModal}
+                      />
+
+                      <View style={{marginTop: 6}}>
+                        <CustomButton
+                          title="Sign In"
+                          mode="contained"
+                          onPress={handleSubmit}
+                        />
+                      </View>
+
+                      <TextButton
+                        title="Don't have account?"
+                        textColor={theme.colors.text}
+                        onPress={() => navigation.navigate('Registration')}
+                      />
+                    </View>
+                  </>
+                )}
+              </Formik>
             </View>
-
-            <TextButton
-              title="Forgot Password?"
-              onPress={handleOpenModal}
-            />
 
             <PaperModal
               visible={forgotPasswordModalVisible}
@@ -121,8 +167,7 @@ const LoginScreen = ({navigation}) => {
               iocnUrl={require('../../../assets/icons/OTP.png')}
               description="Enter OTP code send to your email."
               btnText1="Submit"
-              btnText2="Cancel"
-            >
+              btnText2="Cancel">
               {/* <OTPTextInput /> */}
             </PaperModal>
 
@@ -159,14 +204,6 @@ const LoginScreen = ({navigation}) => {
               iocnUrl={require('../../../assets/icons/passwordChanged.png')}
               description="Congratulations! Now you can login with your new password"
               btnText1="Login"
-            />
-
-            <CustomButton title="Sign In" mode="contained" onPress={() => console.log("Sign-IN")} />
-
-            <TextButton
-              title="Don't have account?"
-              textColor={theme.colors.text}
-              onPress={() => navigation.navigate('Registration')}
             />
           </Card.Content>
         </Card>
