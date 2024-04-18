@@ -122,7 +122,7 @@ const LoginScreen = ({navigation}) => {
                       <TextButton
                         title="Don't have account?"
                         textColor={theme.colors.text}
-                        onPress={() => navigation.navigate('Registration')}
+                        onPress={() => navigation.navigate('RegistrationQRCode')}
                       />
                     </View>
                   </>

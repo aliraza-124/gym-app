@@ -10,8 +10,10 @@ import TextField from '../../components/textField';
 import CustomButton from '../../components/button';
 import BackgroundIcon from '../../components/backgroundIcon';
 import theme from '../../theme';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {launchImageLibrary} from 'react-native-image-picker';
+import DropDown from 'react-native-paper-dropdown';
+import DropDownList from '../../components/dropdown';
 
 const initialValues = {
   name: '',
@@ -35,7 +37,6 @@ const CompleteProfile = ({navigation}) => {
     const LibraryResult = await launchImageLibrary({mediaType: 'photo'});
     if (!LibraryResult.didCancel && !LibraryResult.error) {
       setSelectedImage(LibraryResult.assets[0].uri);
-      //   setCamImage(null);
     }
   };
 
@@ -58,10 +59,7 @@ const CompleteProfile = ({navigation}) => {
                   alignItems="center"
                   position="relative">
                   {selectedImage ? (
-                    <Avatar.Image
-                      size={140}
-                      source={{uri: selectedImage}}
-                    />
+                    <Avatar.Image size={140} source={{uri: selectedImage}} />
                   ) : (
                     <Avatar.Icon
                       size={140}
@@ -140,13 +138,15 @@ const CompleteProfile = ({navigation}) => {
                         errors={errors.weight}
                       />
 
-                      <TextField
+                      {/* <TextField
                         label="Gender"
                         placeholder="Enter your gender"
                         value={values.gender}
                         onChangeText={handleChange('gender')}
                         errors={errors.gender}
-                      />
+                      /> */}
+
+                      <DropDownList />
 
                       <TextField
                         label="Password"

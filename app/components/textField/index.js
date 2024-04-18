@@ -8,6 +8,7 @@ const TextField = ({
   value,
   inputMode,
   secureTextEntry,
+  disabled,
   onChangeText,
   errors,
 }) => {
@@ -29,6 +30,7 @@ const TextField = ({
         value={value}
         inputMode={inputMode}
         secureTextEntry={secureTextEntry}
+        disabled={disabled}
         onChangeText={onChangeText}
         dense="true"
         theme={theme}

@@ -9,6 +9,11 @@ const theme = {
     error: '#FF5722',
     success: '#00BCD4',
 
+    placeholder: '#979797',
+    border: '#D2D4D5',
+
+    supporting: '#FFDFE7',
+
     white: '#FFFFFF',
     black: '#000000',
   },
