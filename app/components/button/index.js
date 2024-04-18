@@ -1,19 +1,25 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {Button} from 'react-native-paper';
 
-const CustomButton = ({title, textColor, mode, onPress, style}) => {
+import {StyleSheet, View, } from 'react-native';
+import React from 'react';
+import {Button, Text} from 'react-native-paper';
+
+export default function CustomButton({title, textColor, mode, onPress, style})  {
   return (
     <View>
       <Button
         mode={mode}
         textColor={textColor}
         style={style}
-        onPress={() => console.log({onPress})}>
-        {title}
+        onPress={onPress}>
+        <Text style={[style, styles.text]}>{title}</Text>
       </Button>
     </View>
   );
 };
 
-export default CustomButton;
+const styles = StyleSheet.create({
+  text : {
+    fontWeight : 600,
+    fontSize : 15
+  }
+})

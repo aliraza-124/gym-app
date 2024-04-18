@@ -1,52 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Card, Button } from 'react-native-paper';
-import BackgroundImage from '../../components/backgroundImage';
-import TextField from '../../components/textField';
+import { StyleSheet, View,  } from 'react-native'
+import { Card, Text } from 'react-native-paper'
+import React from 'react';
 import CustomButton from '../../components/button';
-import ForgotPasswordModal from '../../components/model/ForgotPasswordModal';
-import AppButton from '../../components/customButton';
-
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import AppTextInput from '../../components/textInput';
-import LoginForm from './loginForm';
+import AppButton from '../../components/customButton';
 
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
-});
-
-const LoginScreen = ({navigation}) => {
-  const [visible, setVisible] = useState(false);
-  const [step, setStep] = useState(1);
-
-  const handleForgotPassword = () => {
-    setStep(1); // Start from step 1
-    setVisible(true); // Set showModal state to true to display the modal
-  };
-  
-  const handleNext = () => {
-    // Proceed to the next step
-    (step == 5 ? hideModal() : setStep(step + 1) )
-    
-  
-  };
-
-  const hideModal = () => {
-    setVisible(false);
-    setStep(0); // Reset step when closing the modal
-  };
-
-  const handleLogin = (values) => {
-    console.log(values)
-    navigation.navigate('register')
-  }
-
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+  });
+export default function LoginForm({handleLogin, handleForgotPassword, }) {
   return (
-    <BackgroundImage source={require("../../../assets/images/background.png")}>
-      <View style={styles.styledContainer}>
+    <View style={styles.styledContainer}>
         <Card style={styles.styledCard}>
           <Card.Content>
             <Text variant="titleLarge" style={styles.styledTitle}>
@@ -100,7 +68,7 @@ const LoginScreen = ({navigation}) => {
                   <CustomButton
                     title="Don't have account?"
                     mode="text"
-                    onPress={()=>navigation.navigate('qr')}
+                    onPress={()=>navigation.navigate('register')}
                     style={{  alignItems: 'flex-end' }}
                   />
                 </>
@@ -111,39 +79,23 @@ const LoginScreen = ({navigation}) => {
           </Card.Content>
         </Card>
       </View>
-
-      {/* <LoginForm handleLogin={handleLogin} handleForgotPassword={handleForgotPassword} /> */}
-
-      <ForgotPasswordModal 
-        iconUrl={require("../../../assets/images/icon.png")}
-        visible={visible}
-        hideModal={hideModal}
-        onPress={handleForgotPassword}
-
-        step={step}
-        handleNext={handleNext}
-      >
-
-      </ForgotPasswordModal>
-    </BackgroundImage>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  styledContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    paddingHorizontal: 5,
-  },
-  styledCard: { backgroundColor: 'white', padding: 10, borderRadius: 8 },
-  styledTitle: {
-    color: '#FA2D5E',
-    fontFamily: 'Roboto',
-    fontSize: 27,
-    fontWeight: 'bold',
-    textAlign: 'left',
-  },
-});
-
-export default LoginScreen;
+    styledContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignContent: 'center',
+      paddingHorizontal: 5,
+    },
+    styledCard: { backgroundColor: 'white', padding: 10, borderRadius: 8 },
+    styledTitle: {
+      color: '#FA2D5E',
+      fontFamily: 'Roboto',
+      fontSize: 27,
+      fontWeight: 'bold',
+      textAlign: 'left',
+    },
+  });
+  

@@ -1,8 +1,11 @@
-import React from 'react';
-import TextField from './components/textField'
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import Navigators from './navigators'
 
-const App = () => {
-  return <TextField />;
-};
+export default function App() {
+  return (
+    <Navigators/>
+  )
+}
 
-export default App;
+const styles = StyleSheet.create({})

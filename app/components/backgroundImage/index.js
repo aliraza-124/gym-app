@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: 'rgba(0,0,0,0.5)', // You can adjust the background color opacity here
-    padding: 20,
+    padding: 14,
   },
 });
 

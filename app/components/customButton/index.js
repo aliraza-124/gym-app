@@ -2,11 +2,12 @@ import { StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import React from 'react'
 
-export default function AppButton({title, varient, onPress}) {
+export default function AppButton({title, variant, onPress, icon}) {
   return (
     
     <Button
-        mode={varient}
+        icon={icon}
+        mode={variant}
         style={styles.button}
         onPress={onPress}
     >
