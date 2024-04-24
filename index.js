@@ -1,12 +1,4 @@
-// /**
-//  * @format
-//  */
 
-// import {AppRegistry} from 'react-native';
-// import App from './app/App';
-// import {name as appName} from './app.json';
-
-// AppRegistry.registerComponent(appName, () => App);
 
 import * as React from 'react';
 import {AppRegistry} from 'react-native';
@@ -15,6 +7,9 @@ import {name as appName} from './app.json';
 import LoginScreen from './app/screens/login/index.js';
 import { MD3LightTheme as DefaultTheme } from 'react-native-paper';
 import App from './app/App';
+import { BranchIdProvider } from './app/context/qrContext/index.js';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { UserProvider } from './app/context/userContext.js';
 
 const theme = {
   ...DefaultTheme,
@@ -29,13 +24,21 @@ const theme = {
     
   },
 };
+
 export default function Main() {
-  
+  const queryClient = new QueryClient();
   return (
-    <PaperProvider theme={theme}>
-      <App />
-    </PaperProvider>
+    <QueryClientProvider client={queryClient}>
+      <PaperProvider theme={theme}>
+        <BranchIdProvider>
+          <UserProvider>
+            <App />
+          </UserProvider>
+        </BranchIdProvider>
+      </PaperProvider>
+    </QueryClientProvider>
   );
 }
 
 AppRegistry.registerComponent(appName, () => Main);
+

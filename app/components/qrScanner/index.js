@@ -30,10 +30,10 @@ const QrScanner = ({handleOnSuccess, navigation}) => {
     // Linking.openURL(e.data).catch((err) =>
     //   console.error('An error occured', err)
     // );
-    setReactivate(false);
+    setReactivate(true);
     setData(e.data);
-    // navigation.navigate('register');
     handleOnSuccess(e);
+    // navigation.navigate('register');
     // Alert.alert(
     //   "Scanned Data",
     //   e.data,
@@ -51,8 +51,8 @@ const QrScanner = ({handleOnSuccess, navigation}) => {
     <QRCodeScanner
       onRead={onSuccess}
     //   flashMode={RNCamera.Constants.FlashMode.torch}
-      reactivate={reactivate}
-      reactivateTimeout={5000}
+      reactivate={true}
+      reactivateTimeout={2000}
       // cameraTimeout={2000}
       showMarker={true}
       markerStyle={{borderColor:'red', borderRadius:8, borderWidth:4 }}

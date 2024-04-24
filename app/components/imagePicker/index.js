@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, PermissionsAndroid, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { launchImageLibrary } from "react-native-image-picker";
 import { requestGalleryPermission } from '../../utils/permission'; 
+import { useUser } from '../../context/userContext';
 
-export default function ImagePicker({ label, icon, onPress }) {
-  const [imgUrl, setImgUrl] = useState('');
+export default function ImagePicker({media, label, icon, onChangeImage }) {
+  // const URL = media ? `https://api.dev.inzer.com.au/media-storage?key=${media}` : '';
+  // const [imgUrl, setImgUrl] = useState(URL);
+  const [imgUrl, setImgUrl] = useState(media);
+  
+  const { user } = useUser();
+
+ 
+
 
   // const handlePress = async () => {
   //   const permissionGranted = await requestGalleryPermission();
@@ -51,28 +59,67 @@ export default function ImagePicker({ label, icon, onPress }) {
       console.log(result.assets[0].uri);
       if (!result.didCancel) {
         setImgUrl(result.assets[0].uri);
+        onChangeImage(result.assets[0].uri);
+        // uploadImage(result.assets[0].uri);
       }
     } catch (error) {
       console.log("Error reading the image");
     }
   };
 
+  // const uploadImage = async (imageData) => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('file', {
+  //       uri: imageData.uri,
+  //       type: imageData.type,
+  //       name: 'image.jpg', // You may need to adjust the file name
+  //     });
+
+  //     const response = await fetchMedia(formData); // Adjust this according to your API
+  //     const { data } = await response.json();
+
+  //     // onChangeImage(data.url); // Assuming your API returns the uploaded image URL
+
+  //     // Handle success response from server
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+  //     Alert.alert('Error', 'Failed to upload image');
+  //   }
+  // };
+  // const fetchMedia = async (formData) => {
+  //   try {
+  //     const response = await fetch('https://api.dev.inzer.com.au/media-storage/upload', {
+  //       method: 'POST',
+  //       body: formData,
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error('Failed to upload media');
+  //     }
+  //     return response.json();
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
+
   return (
-    <View>
-      <View style={styles.iconBox}>
-        {!imgUrl && (
-          <Avatar.Icon icon={'account'} size={120} color='#FA2D5E' style={{ backgroundColor: '#EEF1F2' }} />
-        )}
-        {imgUrl && (
-          <Avatar.Image size={120} source={{ uri: imgUrl }} />
-        )}
-        <View style={styles.pickerIcon}>
-          <TouchableOpacity onPress={handleGallery} style={styles.item}>
-            <Avatar.Icon style={{}} size={36} icon={'pen'} />
-          </TouchableOpacity>
+      <View>
+        <View style={styles.iconBox}>
+          {!imgUrl && (
+            <Avatar.Icon icon={'account'} size={120} color='#FA2D5E' style={{ backgroundColor: '#EEF1F2' }} />
+          )}
+          {imgUrl && (
+            <Avatar.Image size={120} source={{ uri : imgUrl }}  />
+            // <Avatar.Image size={120} source={{ uri: `data:image/jpeg;base64,${mediaData}` }}  />
+          )}
+
+          <View style={styles.pickerIcon}>
+            <TouchableOpacity onPress={handleGallery} style={styles.item}>
+              <Avatar.Icon style={{}} size={36} icon={'pen'} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
   );
 }
 
@@ -100,3 +147,4 @@ const styles = StyleSheet.create({
     left: 40
   }
 });
+

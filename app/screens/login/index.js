@@ -1,148 +1,118 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Card, Button } from 'react-native-paper';
-import BackgroundImage from '../../components/backgroundImage';
-import TextField from '../../components/textField';
-import CustomButton from '../../components/button';
-import ForgotPasswordModal from '../../components/model/ForgotPasswordModal';
-import AppButton from '../../components/customButton';
+import React, { useState } from "react";
+import { StyleSheet, Alert } from "react-native";
 
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import AppTextInput from '../../components/textInput';
-import LoginForm from './loginForm';
+import LoginForm from "./loginForm";
+import { useUser } from "../../context/userContext";
+import { useMutation } from "react-query";
+import { login } from "../../utils/api";
+import { validationSchemaLogin } from "../../utils/validations";
+
+const LoginScreen = ({ navigation }) => {
+  const validationSchema = validationSchemaLogin;
+  const [errorMessage, setErrorMessage] = useState("");
+  const { user, setUser } = useUser();
+  const loginMutation = useMutation(login);
 
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
-});
-
-const LoginScreen = ({navigation}) => {
-  const [visible, setVisible] = useState(false);
-  const [step, setStep] = useState(1);
-
-  const handleForgotPassword = () => {
-    setStep(1); // Start from step 1
-    setVisible(true); // Set showModal state to true to display the modal
-  };
-  
-  const handleNext = () => {
-    // Proceed to the next step
-    (step == 5 ? hideModal() : setStep(step + 1) )
-    
-  
+  // Function to handle error
+  const handleError = (message) => {
+    setErrorMessage(message);
   };
 
-  const hideModal = () => {
-    setVisible(false);
-    setStep(0); // Reset step when closing the modal
-  };
-
-  const handleLogin = (values) => {
-    console.log(values)
-    navigation.navigate('register')
+  // Function to close error modal
+  const closeErrorModal = () => {
+  setErrorMessage('');
   }
 
+  const handleLogin = async (values, actions) => {
+    try {
+      const response = await loginMutation.mutateAsync(values);
+      // const userData = response.data.user;
+      const { token, user } = response.data;
+      setUser({ token, data: user });
+      console.log("Login successful:", response);
+      Alert.alert("Login successful");
+      navigation.navigate("profile");
+      actions.resetForm();
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        const { response } = error.response;
+        if (response) {
+          console.error("Login error:", response.statusCode, response.message);
+          handleError(response.message);
+        } else {
+          handleError("Login error: Unauthorized");
+        }
+      } else if (error.response) {
+        handleError(
+          "Login error:",
+          error.response.status,
+          error.response.response
+        );
+      } else {
+        handleError("Login error: Unauthorized");
+      }
+    }
+  };
+
+  // Api login
+  // const loginMutation = useMutation(async (credentials) => {
+  //   const response = await axios.post(
+  //     "https://api.dev.inzer.com.au/user/login",
+  //     {
+  //       email: credentials.email,
+  //       password: credentials.password,
+  //       from : "user",
+  //     }
+  //   );
+  //   return response.data;
+  // });
+
+  // const handleLogin = async (values) => {
+  //   try {
+  //     const data = await loginMutation.mutateAsync(values);
+  //     console.log("Login successful:", data);
+  //     navigation.navigate("profile");
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 401) {
+  //       const { data } = error.response;
+  //       console.error("Login error:", data.statusCode, data.message);
+  //       //  handle specific error messages / display to the user
+  //       console.error("Login error:", data.statusCode, data.message)
+  //     } else {
+  //         console.error("Login error:", error.response.status, error.response.data);
+  //       }
+  //     }
+  // };
+
   return (
-    <BackgroundImage source={require("../../../assets/images/background.png")}>
-      <View style={styles.styledContainer}>
-        <Card style={styles.styledCard}>
-          <Card.Content>
-            <Text variant="titleLarge" style={styles.styledTitle}>
-              Sign In
-            </Text>
-
-            <Formik
-              initialValues={{ email: "", password: "" }}
-              validationSchema={validationSchema}
-              onSubmit={(values) => handleLogin(values)}
-            >
-              {({ handleSubmit, handleChange, errors }) => (
-                <>
-                  <View style={{ gap: 2, marginTop:20 }}>
-                   
-                    <AppTextInput
-                      label={"Email"}
-                      type={"text"}
-                      onChangeText={handleChange("email")}
-                      placeholder={"Enter your email"}
-                      keyboardType={"email-address"}
-                      errors={errors.email}
-                    />
-                    <AppTextInput
-                      label={"Password"}
-                      type={"text"}
-                      onChangeText={handleChange("password")}
-                      placeholder={"Enter your password"}
-                      keyboardType={"default"}
-                      errors={errors.password}
-                      secureTextEntry={true}
-                    />
-                    
-                  </View>
-
-                  <CustomButton
-                    title="Forgot Password?"
-                    mode="text"
-                    onPress={handleForgotPassword}
-                    style={{ color:"#FA2D5E", alignItems: 'flex-end', textDecorationLine: 'underline' }}
-                  />
-
-                  
-                  <AppButton 
-                  
-                    title="Sign In"
-                    variant="contained"
-                    onPress={handleSubmit}
-                  />
-
-                  <CustomButton
-                    title="Don't have account?"
-                    mode="text"
-                    onPress={()=>navigation.navigate('qr')}
-                    style={{  alignItems: 'flex-end' }}
-                  />
-                </>
-
-          )}
-          </Formik>
-
-          </Card.Content>
-        </Card>
-      </View>
-
-      {/* <LoginForm handleLogin={handleLogin} handleForgotPassword={handleForgotPassword} /> */}
-
-      <ForgotPasswordModal 
-        iconUrl={require("../../../assets/images/icon.png")}
-        visible={visible}
-        hideModal={hideModal}
-        onPress={handleForgotPassword}
-
-        step={step}
-        handleNext={handleNext}
-      >
-
-      </ForgotPasswordModal>
-    </BackgroundImage>
+    <LoginForm
+      navigation={navigation}
+      handleLogin={handleLogin}
+      handleError={handleError}
+      errorMessage={errorMessage}
+      closeErrorModal={closeErrorModal}
+      isLoading={loginMutation.isLoading}
+      validationSchema={validationSchema}
+    />
+    
   );
 };
 
 const styles = StyleSheet.create({
   styledContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
+    justifyContent: "center",
+    alignContent: "center",
     paddingHorizontal: 5,
   },
-  styledCard: { backgroundColor: 'white', padding: 10, borderRadius: 8 },
+  styledCard: { backgroundColor: "white", padding: 10, borderRadius: 8 },
   styledTitle: {
-    color: '#FA2D5E',
-    fontFamily: 'Roboto',
+    color: "#FA2D5E",
+    fontFamily: "Roboto",
     fontSize: 27,
-    fontWeight: 'bold',
-    textAlign: 'left',
+    fontWeight: "bold",
+    textAlign: "left",
   },
 });
 

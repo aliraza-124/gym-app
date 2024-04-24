@@ -1,8 +1,10 @@
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
-import { Text } from 'react-native-paper'
+import { Text, useTheme } from 'react-native-paper'
 
+// const theme = useTheme();
 export default function Heading({title}) {
+
   return (
     <Text style={styles.heading}>{title}</Text>
 
@@ -11,7 +13,8 @@ export default function Heading({title}) {
 
 const styles = StyleSheet.create({
     heading: {
-        color: '#FA2D5E',
+        // color: theme.colors.primary,
+        color: 'red',
         fontWeight: 700,
         fontSize: 14,
         fontFamily: 'Roboto',

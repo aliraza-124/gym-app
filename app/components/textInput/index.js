@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
-export default function AppTextInput({errors, keyboardType, label, onChangeText, placeholder, secureTextEntry, value}) {
+export default function AppTextInput({errors, keyboardType, label, onChangeText, placeholder, secureTextEntry, value, disabled}) {
   return (
     <View >
       <TextInput
@@ -15,6 +15,9 @@ export default function AppTextInput({errors, keyboardType, label, onChangeText,
           keyboardType={keyboardType}
           style={styles.textInput}
           secureTextEntry={secureTextEntry}
+          autoCapitalize='none'
+          disabled={disabled}
+          
           // right={<TextInput.Icon icon="eye" />}
       />
      {errors && <Text style={styles.errorText}>{errors}</Text>}

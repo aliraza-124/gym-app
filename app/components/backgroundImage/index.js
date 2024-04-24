@@ -5,12 +5,15 @@ import BackgroundIcon from '../backgroundIcon';
 
 const BackgroundImage = ({source, children}) => {
   return (
+    !source ? <View style={styles.container}><BackgroundIcon />{children}</View>
+    :
     <ImageBackground source={source} style={styles.backgroundImage}>
       <View style={styles.container}>
         <BackgroundIcon />
         {children}
       </View>
-    </ImageBackground>
+    </ImageBackground> 
+    
   );
 };
 
