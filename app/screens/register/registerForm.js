@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignContent: "center",
-      paddingHorizontal: 5,
+      // paddingHorizontal: 5,
     },
     styledCard: {
       backgroundColor: "white",

@@ -77,3 +77,16 @@ export const getProfile = async (token) => {
     console.error("Error fetching user data:", error);
   }
 };
+
+export const fetchProfileData = async (token) => {
+  try {
+    const response = await axios.get("https://api.dev.inzer.com.au/user/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Error fetching user data");
+  }
+};

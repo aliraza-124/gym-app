@@ -17,8 +17,9 @@ const theme = {
     ...DefaultTheme.colors,
     primary: '#FA2D5E',
     secondary: '#FFDFE7',
-    text:' #333333',
-    background: '#eef1f2', 
+    text:'#333333',
+    background: '#F7FAFB', 
+    // background: '#F7FAFB', 
     border: '#D2D4D5', 
     placeholder: '#979797', 
     
@@ -31,9 +32,9 @@ export default function Main() {
     <QueryClientProvider client={queryClient}>
       <PaperProvider theme={theme}>
         <BranchIdProvider>
-          <UserProvider>
-            <App />
-          </UserProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
         </BranchIdProvider>
       </PaperProvider>
     </QueryClientProvider>

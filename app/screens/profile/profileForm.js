@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Divider, Text, useTheme } from "react-native-paper";
+import { Alert, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { ActivityIndicator, Button, Checkbox, Divider, Icon, Text, useTheme } from "react-native-paper";
 import { Formik } from "formik";
 import AppTextInput from "../../components/textInput";
 import Heading from "../../components/heading";
@@ -10,94 +10,49 @@ import ImagePicker from "../../components/imagePicker";
 import DatePicker from "../../components/datePicker";
 import GenderDropdown from "../../components/dropDown";
 import axios from "axios";
+import AppCheckbox from "../../components/checkbox";
+import { useUser } from "../../context/userContext";
+import LoadingIndicator from "../../components/loadingIndicator";
+import AppModel from "../../components/model";
 
 export default function ProfileForm({
   navigation,
-  userData,
+  userData ,
   handleSubmitProfile,
   token,
   validationSchema,
   isLoading
 }) {
-  // const handleSubmitProfile = async (values) => {
-  //   // console.log("Values in handle submit",values);
-  //   try {
-  //     console.log("Handle submit values---------", values);
-  //     // if (user && user.token) {
-  //     const response = await axios.put(
-  //       'https://api.dev.inzer.com.au/user',
-  //       {
-  //         name: values.name,
-  //         email: values.email,
-  //         dob: values.dob,
-  //         weight: values.weight,
-  //         gender: values.gender,
-  //         phoneNo: values.phoneNo,
-  //         address: values.address,
-  //         emergencyContactName: values.emergencyContactName,
-  //         emergencyContactNo: values.emergencyContactNo,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log('Response : -----------', response.data);
-  //     Alert.alert('Success', 'Profile updated successfully');
-  //     // navigation.navigate('NextScreen');
-  //   // }
-  //   }  catch (error) {
-  //     if (error.response) {
-  //       //  server response with a status code
-  //       console.log(error.response.data);
-  //       console.log(error.response.status);
-  //       console.log(error.response.headers);
-  //     } else if (error.request) {
-  //       // no response was received
-  //       console.log(error.request);
-  //     } else {
-  //       // Something triggered an error
-  //       console.log('Error', error.message);
-  //     }
-  //     console.log(error.config);
-  //   }
-  // };
-
-  // const {
-  //   address,
-  //   branchId,
-  //   checkPassword,
-  //   createdAt,
-  //   dateOfBirth,
-  //   deletedAt,
-  //   email,
-  //   emergencyContactName,
-  //   emergencyContactNumber,
-  //   gender,
-  //   gymId,
-  //   id,
-  //   isEmailVerified,
-  //   lastLoggedIn,
-  //   media,
-  //   name,
-  //   otpCode,
-  //   otpExpirationTime,
-  //   phoneNumber,
-  //   role,
-  //   status,
-  //   updatedAt,
-  //   userPreference,
-  //   username,
-  //   weight,
-  // } = userData?.data || {};
-  // const URL = media ? `https://api.dev.inzer.com.au/media-storage?key=${media}` : '';
+  const {showModal, setShowModal} = useState(false);
+  const handleShareProfile = () => {
+    setShowModal(true);
+    console.log(showModal);
+  };
   const [selectedImgUrl, setSelectedImageUrl] = useState(null);
+//   const showQuoteDefault = userData?.data?.userPreference !== null && userData?.data?.userPreference?.showQuote !== null 
+//   ? userData?.data?.userPreference?.showQuote 
+//   : false;
+
+// const isShowProfileDefault = userData?.data?.userPreference !== null && userData?.data?.userPreference?.isShowProfile !== null 
+//   ? userData?.data?.userPreference?.isShowProfile 
+//   : false;
+  const theme = useTheme();
+  const {toggleLogin} = useUser();
   return (
     <KeyboardAvoidingScrollView keyboardDismissMode="none">
       <View style={styles.container}>
-        <Text style={styles.heading}>Complete Profile</Text>
-        {userData && (
+        <View style={{alignItems:'center', flexDirection:'row', gap:16}} >
+          <TouchableWithoutFeedback onPress={handleShareProfile} >
+            <Icon
+              source="chevron-left-circle"
+              color={theme.colors.primary}
+              size={28}
+            />
+          </TouchableWithoutFeedback>
+       
+          <Text style={styles.heading}>Complete your Profile</Text>
+        </View>
+        {userData ? (
           <View style={styles.card}>
             <Formik
               initialValues={{
@@ -115,6 +70,10 @@ export default function ProfileForm({
                 emergencyContactNo:
                   userData?.data?.emergencyContactNumber || "",
                 media: userData?.data?.media || null,
+                acceptRequestMessage : userData?.data?.userPreference?.acceptRequestMessage || " ",
+                declineRequestMessage : userData?.data?.userPreference?.declineRequestMessage || " ",
+                showQuote : userData?.data?.userPreference?.showQuote || false,
+                isShowProfile : userData?.data?.userPreference?.isShowProfile || false,
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmitProfile}
@@ -252,16 +211,58 @@ export default function ProfileForm({
                     keyboardType={"phone-pad"}
                     errors={errors.emergencyContactNo}
                   />
+                  <Heading title={"User preferences"} />
+                  <Divider />
+                  <AppTextInput
+                    label={"Accept request message"}
+                    value={values.acceptRequestMessage}
+                    onChangeText={handleChange("acceptRequestMessage")}
+                    placeholder={"Enter accept request message"}
+                    keyboardType={"default"}
+                    multiline={true}
+                    numberOfLines={5}
+                    errors={errors.acceptRequestMessage}
+                  />
+                  <AppTextInput
+                    label={"Decline Request Message"}
+                    value={values.declineRequestMessage}
+                    onChangeText={handleChange("declineRequestMessage")}
+                    placeholder={"Enter decline request message"}
+                    multiline={true}
+                    numberOfLines={5}
+                    keyboardType={"default"}
+                    errors={errors.declineRequestMessage}
+                  />
+                  {/* <Checkbox.Item
+                    label="View quotations upon sign in"
+                    position="leading"
+                    
+                  /> */}
+                  
+                    <AppCheckbox
+                      label="View quotations upon sign in"
+                      value={values.showQuote}
+                      onValueChange={(value) => setFieldValue('showQuote', value)}
+                      // onValueChange={(value) => handleChange('showQuote')(value)}
+                    />
+                    <AppCheckbox
+                      label="Share profile with other gym members"
+                      value={values.isShowProfile}
+                      onValueChange={(value) => setFieldValue('isShowProfile', value)}
+                      // onValueChange={(value) => handleChange('showQuote')(value)}
+                    />
+               
+
                   <View
                     style={{
                       flexDirection: "row",
                       gap: 10,
-                      justifyContent: "center",
+                      justifyContent: "flex-start",
                       paddingVertical: 30,
                     }}
                   >
                     {isLoading ? (
-                      <ActivityIndicator size="large" color="red" />
+                      <LoadingIndicator size="large" />
                     ) : (
                       <AppButton
                         title={"Save"}
@@ -270,38 +271,57 @@ export default function ProfileForm({
                       />
                     )}
                     <AppButton
-                      title={"Skip"}
+                      title={"Skip/logout"}
                       variant={"outlined"}
-                      onPress={navigation.goBack}
+                      onPress={()=>toggleLogin()}
+                      // onPress={navigation.goBack}
+                    />
+                    <AppButton
+                      title={"Share"}
+                      variant={"outlined"}
+                      onPress={()=>handleShareProfile()}
+                      // onPress={navigation.goBack}
                     />
                   </View>
                 </>
               )}
             </Formik>
           </View>
+        ) : (
+          <ActivityIndicator size={60} color="#FA2D5E"  style={styles.isLoading}/>
         )}
       </View>
+      <AppModel visible={showModal} title={"Share your profile"}/>
     </KeyboardAvoidingScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+const styles  =  StyleSheet.create({
   container: {
-    marginTop: 120,
+    // marginTop: 120,
     gap: 8,
   },
   card: {
     padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 8,
+    // backgroundColor: "#fff",
+    borderRadius: 4,
     gap: 8,
     paddingBottom: 10,
+    backgroundColor:'#F7FAFB',
+    borderColor: '#D2D4D5',
+    borderWidth: 1,
+
   },
   heading: {
     textAlign: "center",
     fontFamily: "Roboto",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 700,
-    color: "#FA2D5E",
+    color: "#000",
+    paddingVertical:10,
   },
+  isLoading: {
+    marginTop: 100,
+    alignSelf: "center",
+  }
 });

@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         fontWeight: 700,
         fontSize: 14,
         fontFamily: 'Roboto',
+        paddingVertical:8
         // alignItems: 'flex-start',
         // textAlign:'flex-start',
         // justifyContent: 'flex-start',

@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Navigators from './navigators'
+import StackNavigator from './navigations/stackNavigation'
 
 export default function App() {
   return (
-    <Navigators/>
+    <StackNavigator/>
   )
 }
 

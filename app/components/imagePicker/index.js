@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, PermissionsAndroid, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Avatar } from 'react-native-paper';
+import { Avatar, useTheme } from 'react-native-paper';
 import { launchImageLibrary } from "react-native-image-picker";
 import { requestGalleryPermission } from '../../utils/permission'; 
 import { useUser } from '../../context/userContext';
@@ -8,10 +8,10 @@ import { useUser } from '../../context/userContext';
 export default function ImagePicker({media, label, icon, onChangeImage }) {
   // const URL = media ? `https://api.dev.inzer.com.au/media-storage?key=${media}` : '';
   // const [imgUrl, setImgUrl] = useState(URL);
-  const [imgUrl, setImgUrl] = useState(media);
+  const [imgUrl, setImgUrl] = useState(media );
   
   const { user } = useUser();
-
+  const theme = useTheme();
  
 
 
@@ -105,8 +105,8 @@ export default function ImagePicker({media, label, icon, onChangeImage }) {
   return (
       <View>
         <View style={styles.iconBox}>
-          {!imgUrl && (
-            <Avatar.Icon icon={'account'} size={120} color='#FA2D5E' style={{ backgroundColor: '#EEF1F2' }} />
+          {!media && (
+            <Avatar.Icon icon={'account'} size={120} color={theme.colors.primary} style={{ backgroundColor: theme.colors.background }} />
           )}
           {imgUrl && (
             <Avatar.Image size={120} source={{ uri : imgUrl }}  />

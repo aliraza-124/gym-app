@@ -7,7 +7,7 @@ import { useUser } from "../../context/userContext";
 import * as Yup from "yup";
 import { tokens } from "react-native-paper/lib/typescript/styles/themes/v3/tokens";
 import { useMutation, useQuery } from "react-query";
-import {  getProfile, updateProfile } from "../../utils/api";
+import { fetchProfileData, getProfile, updateProfile } from "../../utils/api";
 import { ActivityIndicator } from "react-native-paper";
 import { validationSchemaProfile } from "../../utils/validations";
 
@@ -29,6 +29,19 @@ export default function Profile({ navigation }) {
   //     console.error("Error fetching user data:", error);
   //   }
   // };
+
+  // const { data: userData, isLoading, isError } = useQuery(
+  //   ['profileData', user],
+  //   () => fetchProfileData(user.token),
+  //   {
+  //     enabled: user && user.token,
+  //   }
+  // );
+  // console.log("userData --------------- :  ", userData);
+  // // Handle loading and error states
+  // if (isLoading) return <LoadingComponent />;
+  // if (isError) return <ErrorComponent />;
+
   useEffect(() => {
     const getLoggedInUserInfo = async () => {
       if (user && user.token) {
@@ -109,20 +122,19 @@ export default function Profile({ navigation }) {
     //   console.log(error.config);
     // }
   };
+  
 
   return (
     <View style={styles.container}>
       <BackgroundImage>
-        {userData && (
-          <ProfileForm
-            navigation={navigation}
-            handleSubmitProfile={handleSubmitProfile}
-            token={user.token}
-            userData={userData}
-            validationSchema={validationSchema}
-            isLoading={ProfileMutation.isLoading}
-          />
-        )}
+        <ProfileForm
+          navigation={navigation}
+          handleSubmitProfile={handleSubmitProfile}
+          token={user.token}
+          userData={userData}
+          validationSchema={validationSchema}
+          isLoading={ProfileMutation.isLoading}
+        />
       </BackgroundImage>
     </View>
   );
@@ -132,7 +144,7 @@ const styles = StyleSheet.create({
   container: {
     // backgroundColor:'#EEF1F2',
     flex: 1,
-    padding: 2,
-    paddingBottom: 0,
+    // padding: 2,
+    // paddingBottom: 0,
   },
 });

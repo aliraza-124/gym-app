@@ -10,7 +10,7 @@ import { validationSchemaLogin } from "../../utils/validations";
 const LoginScreen = ({ navigation }) => {
   const validationSchema = validationSchemaLogin;
   const [errorMessage, setErrorMessage] = useState("");
-  const { user, setUser } = useUser();
+  const { user, setUser, toggleLogin } = useUser();
   const loginMutation = useMutation(login);
 
 
@@ -32,7 +32,8 @@ const LoginScreen = ({ navigation }) => {
       setUser({ token, data: user });
       console.log("Login successful:", response);
       Alert.alert("Login successful");
-      navigation.navigate("profile");
+      toggleLogin();
+      navigation.navigate("welcome");
       actions.resetForm();
     } catch (error) {
       if (error.response && error.response.status === 401) {

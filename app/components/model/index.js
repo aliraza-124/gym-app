@@ -5,7 +5,7 @@ import AppButton from "../customButton";
 import TextField from "../textField";
 import ModelTitle from "./modelTitle";
 
-export default function Model({ iconUrl, onPress, visible, showModal, hideModal, title, btnTitle1, btnTitle2, description,  children}) {
+export default function AppModel({ iconUrl, onPress, visible, showModal, hideModal, title, btnTitle1, btnTitle2, description,  children}) {
   const containerStyle = { backgroundColor: "white", padding: 20 };
   return (
     <Portal>

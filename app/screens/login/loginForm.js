@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import AppTextInput from "../../components/textInput";
 import ErrorComponent from "../../components/errorModal";
+import LoadingIndicator from "../../components/loadingIndicator";
 
 
 export default function LoginForm({
@@ -86,7 +87,7 @@ export default function LoginForm({
                     }}
                   />
                   {isLoading ? (
-                    <ActivityIndicator size={60} color="red" />
+                    <LoadingIndicator size={60} />
                   ) : (
                     <AppButton
                       title="Sign In"
