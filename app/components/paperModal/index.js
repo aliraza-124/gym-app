@@ -12,9 +12,11 @@ const PaperModal = ({
   title,
   iocnUrl,
   description,
+  textPossiton,
   children,
   btnText1,
   btnText2,
+  buttonsPossiton
 }) => {
   const containerStyle = {backgroundColor: 'white', padding: 20};
 
@@ -42,14 +44,18 @@ const PaperModal = ({
           </View>
 
           <View style={styles.styledModalIcon}>
-            <Avatar.Image size={70} source={iocnUrl} />
+            {iocnUrl && <Avatar.Image size={70} source={iocnUrl} />}
           </View>
 
-          <Text style={{textAlign: 'center'}}>{description}</Text>
+          <Text style={{textAlign: textPossiton ? textPossiton : 'center'}}>{description}</Text>
           <View style={{paddingVertical: 20, gap: 10}}>{children}</View>
 
           <View
-            style={{flexDirection: 'row', justifyContent: 'center', gap: 10}}>
+            style={{
+              flexDirection: 'row',
+              justifyContent: buttonsPossiton ? buttonsPossiton : 'center',
+              gap: 10,
+            }}>
             <CustomButton
               title={btnText1}
               mode="contained"

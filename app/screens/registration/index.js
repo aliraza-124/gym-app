@@ -3,7 +3,7 @@ import React from 'react';
 import {Card, Divider} from 'react-native-paper';
 
 import {Formik} from 'formik';
-import { registrationValidationSchema } from '../../validation/validationSchemas';
+import {registrationValidationSchema} from '../../validation/validationSchemas';
 
 import BackgroundImage from '../../components/backgroundImage';
 import TextField from '../../components/textField';
@@ -12,10 +12,14 @@ import TextButton from '../../components/textButton';
 import IconButton from '../../components/iconButton';
 import theme from './../../theme/index';
 
+const initialValues = {
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
-const initialValues = {name: '', email: '', password: '', confirmPassword: ''};
-
-const RegistrationScreen = ({navigation}) => {
+const RegistrationScreen = ({navigation, handleRegister}) => {
   return (
     <BackgroundImage source={require('../../../assets/images/background.png')}>
       <View style={styles.styledContainer}>
@@ -29,11 +33,7 @@ const RegistrationScreen = ({navigation}) => {
               <Formik
                 initialValues={initialValues}
                 validationSchema={registrationValidationSchema}
-                onSubmit={(values, actions) => {
-                  console.log(values);
-                  navigation.navigate('Login');
-                  actions.resetForm();
-                }}>
+                onSubmit={handleRegister}>
                 {({
                   handleChange,
                   handleSubmit,
@@ -54,6 +54,7 @@ const RegistrationScreen = ({navigation}) => {
                       label="Email"
                       placeholder="Enter your email"
                       value={values.email}
+                      autoCapitalize="none"
                       onChangeText={handleChange('email')}
                       errors={errors.email}
                     />

@@ -1,60 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  PermissionsAndroid,
-} from 'react-native';
+import {Alert, StyleSheet, Text, View, Dimensions} from 'react-native';
 import {Icon} from 'react-native-paper';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 import theme from '../../theme';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {useScanContext} from '../../contexts/ScanContext';
 
 const AppQRCodeScanner = ({title, navigation}) => {
-  const [scannedData, setScannedData] = useState(null);
-
-  useEffect(() => {
-    requestCameraPermission();
-  }, []);
-
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'Camera Permission',
-          message: 'App needs access to your camera.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Camera permission granted');
-      } else {
-        console.log('Camera permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+  const {scannedData, updateScannedData} = useScanContext();
 
   const onSuccess = e => {
-    setScannedData(e.data);
-    handleGetInfo();
-  };
-
-  const handleGetInfo = () => {
-    if (scannedData) {
-      Alert.alert('Scanned Data:', scannedData);
+    const scannedData = e.data;
+    if (scannedData.includes('/signup?branchId=')) {
+      const id = scannedData.split('=')[1];
+      updateScannedData(id);
       navigation.navigate('Registration');
+    } else {
+      Alert.alert('Wrong QR Code scanned', 'Please scan a QR Code again.');
     }
-    // } else {
-    //   Alert.alert('No QR Code scanned', 'Please scan a QR Code first.');
-    // }
   };
 
   return (

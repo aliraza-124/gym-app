@@ -7,6 +7,9 @@ const TextField = ({
   placeholder,
   value,
   inputMode,
+  multiline,
+  numberOfLines,
+  autoCapitalize,
   secureTextEntry,
   disabled,
   onChangeText,
@@ -29,6 +32,9 @@ const TextField = ({
         placeholder={placeholder}
         value={value}
         inputMode={inputMode}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
+        autoCapitalize={autoCapitalize}
         secureTextEntry={secureTextEntry}
         disabled={disabled}
         onChangeText={onChangeText}

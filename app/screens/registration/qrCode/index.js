@@ -1,7 +1,8 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import AppQRCodeScanner from '../../../components/qrCodeScanner';
+
 import theme from '../../../theme';
+import AppQRCodeScanner from '../../../components/qrCodeScanner';
 import BackgroundIcon from './../../../components/backgroundIcon/index';
 
 const RegistrationQRCode = ({navigation}) => {
@@ -9,7 +10,10 @@ const RegistrationQRCode = ({navigation}) => {
     <>
       <View style={styles.styledContainer}>
         <BackgroundIcon />
-        <AppQRCodeScanner title="Scan QR code to sign up on mobile" navigation={navigation} />
+        <AppQRCodeScanner
+          title="Scan QR code to sign up on mobile"
+          navigation={navigation}
+        />
       </View>
     </>
   );

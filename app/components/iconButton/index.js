@@ -1,16 +1,16 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {Button, Icon} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import theme from '../../theme';
 
-const IconButton = ({icon, title, onPress}) => {
+const IconButton = ({icon, mode, title, onPress}) => {
   return (
     <>
       <Button
         icon={icon}
-        mode="outlined"
+        mode={mode}
         onPress={onPress}
-        textColor={theme.colors.text}
+        buttonColor={theme.colors.primary}
         style={styles.styledIconButton}>
         {title}
       </Button>

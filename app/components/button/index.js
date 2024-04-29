@@ -3,13 +3,17 @@ import {StyleSheet, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import theme from '../../theme';
 
-const CustomButton = ({title, mode, onPress}) => {
+const CustomButton = ({title, mode, bgColor, borderRadius , onPress}) => {
   const buttonStyle = {
-    backgroundColor: mode === 'contained' ? theme.colors.primary : 'none',
+    backgroundColor:
+      mode === 'contained' ? theme.colors.primary : bgColor ? bgColor : 'none',
+
+    borderRadius: borderRadius ? 50 : 4,
   };
 
   const textColor = mode === 'contained' ? 'white' : theme.colors.primary;
-  const rippleColor = mode === 'outlined' ? 'transparent' : theme.colors.primary;
+  const rippleColor =
+    mode === 'outlined' ? 'transparent' : theme.colors.primary;
 
   return (
     <View>
@@ -27,8 +31,7 @@ const CustomButton = ({title, mode, onPress}) => {
 
 const styles = StyleSheet.create({
   styledButton: {
-    borderRadius: 4,
-    paddingVertical: 3,
+    // paddingVertical: 3 ,
     borderColor: theme.colors.primary,
   },
 });

@@ -1,15 +1,11 @@
-import {StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {View, Text} from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
-import Color from 'color';
-
 import theme from '../../theme';
+import TextField from '../textField';
 
-const DropDownList = () => {
+const DropDownList = ({value, onChangeText, errors}) => {
   const [showDropDown, setShowDropDown] = useState(false);
-  const [gender, setGender] = useState('');
-
-  //   const lightenedPrimaryColor = Color('#FA2D5E').lighten(0.1).hex();
 
   const genderList = [
     {
@@ -34,8 +30,12 @@ const DropDownList = () => {
         visible={showDropDown}
         showDropDown={() => setShowDropDown(true)}
         onDismiss={() => setShowDropDown(false)}
-        value={gender}
-        setValue={setGender}
+        value={value}
+        setValue={onChangeText}
+        // setValue={(value) => {
+        //   // Update Formik field value
+        //   setFieldValue('gender', value);
+        // }}
         list={genderList}
         activeColor={theme.colors.text}
         inputProps={{
@@ -43,7 +43,11 @@ const DropDownList = () => {
             backgroundColor: theme.colors.white,
           },
         }}
-        dropDownStyle={{color: theme.colors.white, borderColor: 'red'}}
+        dropDownStyle={{
+          color: theme.colors.white,
+          backgroundColor: 'transparent',
+          shadowColor: theme.colors.white,
+        }}
         dropDownItemStyle={{
           backgroundColor: theme.colors.white,
         }}
@@ -52,10 +56,10 @@ const DropDownList = () => {
           backgroundColor: theme.colors.primary,
         }}
       />
+
+      {errors && <Text style={{color: 'red'}}>{errors}</Text>}
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default DropDownList;
